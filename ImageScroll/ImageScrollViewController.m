@@ -91,14 +91,11 @@
 }
 
 - (IBAction)onImageChangeTouched:(id)sender {
-  self.changeImageButton.selected = !self.changeImageButton.isSelected;
-  [self.changeImageButton invalidateIntrinsicContentSize];
-
-  NSString *fileName = @"wallabi.jpg";
-  if (self.changeImageButton.selected ) fileName = @"wallabi_small.jpg";
-
-  self.imageView.image = [UIImage imageNamed: fileName];
-  [self updateZoom];
+    CGRect visibleRect = [self.scrollView convertRect:self.scrollView.bounds toView:self.imageView];
+    CGImageRef imageRef = CGImageCreateWithImageInRect([self.imageView.image CGImage], visibleRect);
+    // or use the UIImage wherever you like
+    self.imageView.image = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
 }
 
 @end
